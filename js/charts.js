@@ -68,7 +68,7 @@ function buildTrendChart() {
       x: {
         type: 'category',
         tick: {
-          format: (i, cat) => (parseInt(cat) % 4 === 0 ? cat : ''),
+          format: (i, cat) => (parseInt(cat) % 2 === 0 ? cat : ''),
           multiline: false
         }
       },
