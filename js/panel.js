@@ -1,6 +1,3 @@
-
-Copy
-
 /* ============================================================
    panel.js — controls for the left info panel and map overlays
    Handles:
