@@ -45,11 +45,23 @@ let mhaVisible = true;
 // LOAD MAP AND ADD LAYERS
 // ============================================================
 map.on('load', function () {
-
-  // Load the MHA zones GeoJSON from the assets folder
   fetch('assets/MHA_zones_.geojson')
     .then(function (res) { return res.json(); })
     .then(function (geojson) {
+
+      // Reproject all coordinates from EPSG:2285 to WGS84
+      function reprojectCoords(coords) {
+        if (typeof coords[0] === 'number') {
+          return proj4('EPSG:2285', 'WGS84', coords);
+        }
+        return coords.map(reprojectCoords);
+      }
+      geojson.features.forEach(function(f) {
+        if (f.geometry) {
+          f.geometry.coordinates = reprojectCoords(f.geometry.coordinates);
+        }
+      });
+      delete geojson.crs;
 
       // Add the GeoJSON as a Mapbox source
       map.addSource('mha-zones', {
