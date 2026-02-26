@@ -1,182 +1,218 @@
-// map.js — Mapbox GL JS map initialization
-// Handles: MHA choropleth, zone category layer, hover popups
+/* ============================================================
+   map.js — Mapbox map, MHA zones layer, tooltips, layer toggle
+   Depends on: charts.js and panel.js being loaded after this
+   ============================================================ */
 
+// NOTE: Replace with your own Mapbox token before deploying
 mapboxgl.accessToken = 'pk.eyJ1IjoibmFsMTIiLCJhIjoiY21reXBkYmxtMDltbDNyb2NmcjZpaDdvdiJ9.ZX7GLNtaTYyTjLOhx4ITqg';
 
-// ── Map object ────────────────────────────────────────────────
+// Map is centered on Seattle, WA
+// Mapbox GL JS uses Web Mercator (EPSG:3857) internally but accepts
+// GeoJSON coordinates in WGS84 (EPSG:4326) — our data is in 4326, so no conversion needed
 const map = new mapboxgl.Map({
   container: 'map',
   style: 'mapbox://styles/mapbox/dark-v11',
-  center: [-122.335, 47.608],   // Seattle center
+  center: [-122.335, 47.608],   // Seattle city center
   zoom: 11,
   minZoom: 10,
-  maxZoom: 16
+  maxZoom: 15
 });
 
+// Navigation controls (zoom + compass) — top right of map
 map.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
-// ── Color maps ────────────────────────────────────────────────
+// Shared popup instance — reused on mousemove to avoid stacking
+const popup = new mapboxgl.Popup({
+  closeButton: false,
+  closeOnClick: false,
+  maxWidth: '260px'
+});
 
-// By MHA contribution level (M, M1, M2)
-const MHA_VALUE_COLORS = {
-  'M':    '#f5a623',   // amber   — standard
-  'M1':   '#e07b39',   // orange  — medium
-  'M2':   '#c0392b',   // red     — high
-  'none': '#4a5568'    // grey    — no MHA value
+// MHA tier → color mapping (matches legend in index.html)
+const MHA_COLORS = {
+  'M':  '#4fc3c3',   // teal — standard contribution
+  'M1': '#f5a623',   // orange — higher contribution
+  'M2': '#e74c3c',   // red — highest contribution
 };
 
-// By zone category (commercial, residential, etc.)
-const CATEGORY_COLORS = {
-  'Lowrise Multi-Family':       '#4fc3c3',
-  'High-Density Multi-Family':  '#177e89',
-  'Neighborhood Commercial':    '#f5a623',
-  'Commercial':                 '#e07b39',
-  'Seattle Mixed':              '#9b59b6',
-  'Industrial':                 '#7f8c8d',
-  'Downtown':                   '#e74c3c',
-  'Major Institutions':         '#2ecc71'
-};
+// Track whether MHA layer is currently visible
+let mhaVisible = true;
 
-// ── Mapbox paint expressions ──────────────────────────────────
+// ============================================================
+// LOAD MAP AND ADD LAYERS
+// ============================================================
+map.on('load', function () {
 
-function mhaValuePaint() {
-  return [
-    'match', ['get', 'MHA_VALUE'],
-    'M',  MHA_VALUE_COLORS['M'],
-    'M1', MHA_VALUE_COLORS['M1'],
-    'M2', MHA_VALUE_COLORS['M2'],
-    MHA_VALUE_COLORS['none']
-  ];
-}
+  // Load the MHA zones GeoJSON from the assets folder
+  fetch('assets/MHA_zones_.geojson')
+    .then(function (res) { return res.json(); })
+    .then(function (geojson) {
 
-function categoryPaint() {
-  const expr = ['match', ['get', 'CATEGORY_DESC']];
-  Object.entries(CATEGORY_COLORS).forEach(([k, v]) => expr.push(k, v));
-  expr.push('#4a5568');   // fallback
-  return expr;
-}
-
-// ── Hover popup ───────────────────────────────────────────────
-const popup = new mapboxgl.Popup({ closeButton: false, closeOnClick: false });
-
-// ── Load map and add layers ───────────────────────────────────
-map.on('load', function() {
-
-  fetch('assets/mha_zones.geojson')
-    .then(r => r.json())
-    .then(function(geojson) {
-
-      map.addSource('mha', {
+      // Add the GeoJSON as a Mapbox source
+      map.addSource('mha-zones', {
         type: 'geojson',
-        data: geojson,
-        promoteId: 'OBJECTID'
+        data: geojson
       });
 
-      // Fill layer — colored by MHA_VALUE by default
+      // --- Fill layer: each zone colored by its MHA tier ---
       map.addLayer({
         id: 'mha-fill',
         type: 'fill',
-        source: 'mha',
+        source: 'mha-zones',
         paint: {
-          'fill-color': mhaValuePaint(),
-          'fill-opacity': 0.75
+          'fill-color': [
+            'match',
+            ['get', 'MHA_VALUE'],
+            'M',  MHA_COLORS['M'],
+            'M1', MHA_COLORS['M1'],
+            'M2', MHA_COLORS['M2'],
+            '#333333'   // fallback for null/missing MHA_VALUE
+          ],
+          'fill-opacity': 0.55
         }
       });
 
-      // Outline layer
+      // --- Outline layer: thin border on each zone polygon ---
       map.addLayer({
-        id: 'mha-line',
+        id: 'mha-outline',
         type: 'line',
-        source: 'mha',
+        source: 'mha-zones',
         paint: {
-          'line-color': '#ffffff',
-          'line-width': 0.3,
-          'line-opacity': 0.3
+          'line-color': [
+            'match',
+            ['get', 'MHA_VALUE'],
+            'M',  MHA_COLORS['M'],
+            'M1', MHA_COLORS['M1'],
+            'M2', MHA_COLORS['M2'],
+            '#555555'
+          ],
+          'line-width': 0.6,
+          'line-opacity': 0.8
         }
       });
 
-      // Hover highlight layer
+      // --- Hover highlight layer: brightens zone on mouseover ---
       map.addLayer({
         id: 'mha-hover',
         type: 'fill',
-        source: 'mha',
+        source: 'mha-zones',
         paint: {
           'fill-color': '#ffffff',
           'fill-opacity': [
             'case',
-            ['boolean', ['feature-state', 'hover'], false],
-            0.2,
-            0
+            ['boolean', ['feature-state', 'hovered'], false],
+            0.12,   // visible when hovered
+            0       // invisible otherwise
           ]
         }
       });
 
-      // ── Hover events ───────────────────────────────────────
-      let hoveredId = null;
+      // Wire up interaction events now that layers exist
+      initMapInteractions();
 
-      map.on('mousemove', 'mha-fill', function(e) {
-        map.getCanvas().style.cursor = 'pointer';
+      // Initialize charts now that map is ready
+      // charts.js exposes initCharts() globally
+      initCharts();
 
-        if (hoveredId !== null) {
-          map.setFeatureState({ source: 'mha', id: hoveredId }, { hover: false });
-        }
-        hoveredId = e.features[0].id;
-        map.setFeatureState({ source: 'mha', id: hoveredId }, { hover: true });
-
-        const p = e.features[0].properties;
-        const mhaVal = p.MHA_VALUE || 'N/A';
-        const zone = p.ZONING || 'N/A';
-        const cat = p.CATEGORY_DESC || 'N/A';
-        const desc = p.PUBLIC_DESCRIPTION
-          ? p.PUBLIC_DESCRIPTION.charAt(0).toUpperCase() + p.PUBLIC_DESCRIPTION.slice(1)
-          : '';
-
-        popup.setLngLat(e.lngLat)
-          .setHTML(`
-            <div class="popup-title">${zone}</div>
-            <div class="popup-row">Category: <span>${cat}</span></div>
-            <div class="popup-row">MHA Level: <span>${mhaVal}</span></div>
-            ${desc ? `<div class="popup-row" style="margin-top:6px;font-size:0.7rem;color:#7a9ab5;max-width:220px;">${desc}</div>` : ''}
-          `)
-          .addTo(map);
-      });
-
-      map.on('mouseleave', 'mha-fill', function() {
-        map.getCanvas().style.cursor = '';
-        popup.remove();
-        if (hoveredId !== null) {
-          map.setFeatureState({ source: 'mha', id: hoveredId }, { hover: false });
-        }
-        hoveredId = null;
-      });
+      // Initialize panel controls (year slider, race buttons, reset)
+      // panel.js exposes initPanel() globally
+      initPanel();
 
     })
-    .catch(err => console.error('MHA GeoJSON load error:', err));
+    .catch(function (err) {
+      console.error('Failed to load MHA zones GeoJSON:', err);
+    });
 });
 
-// ── Exposed functions for panel.js to call ────────────────────
+// ============================================================
+// MAP INTERACTIONS — hover tooltip, click, feature state
+// ============================================================
+function initMapInteractions() {
 
-// Switch fill to MHA value coloring
-window.showMhaLayer = function() {
-  if (!map.getLayer('mha-fill')) return;
-  map.setPaintProperty('mha-fill', 'fill-color', mhaValuePaint());
+  let hoveredId = null;
 
-  document.getElementById('legend-title').textContent = 'MHA Contribution Level';
-  document.getElementById('legend-items').innerHTML = `
-    <div class="legend-row"><div class="legend-swatch" style="background:#f5a623;"></div> M &mdash; Standard</div>
-    <div class="legend-row"><div class="legend-swatch" style="background:#e07b39;"></div> M1 &mdash; Medium</div>
-    <div class="legend-row"><div class="legend-swatch" style="background:#c0392b;"></div> M2 &mdash; High</div>
-    <div class="legend-row"><div class="legend-swatch" style="background:#4a5568;"></div> No MHA Value</div>
-  `;
-};
+  // --- Mousemove: show popup and highlight zone ---
+  map.on('mousemove', 'mha-fill', function (e) {
+    if (!e.features.length) return;
+    map.getCanvas().style.cursor = 'pointer';
 
-// Switch fill to zone category coloring
-window.showCategoryLayer = function() {
-  if (!map.getLayer('mha-fill')) return;
-  map.setPaintProperty('mha-fill', 'fill-color', categoryPaint());
+    const feat = e.features[0];
+    const props = feat.properties;
 
-  document.getElementById('legend-title').textContent = 'Zone Category';
-  document.getElementById('legend-items').innerHTML = Object.entries(CATEGORY_COLORS).map(([k, v]) =>
-    `<div class="legend-row"><div class="legend-swatch" style="background:${v};"></div> ${k}</div>`
-  ).join('') + `<div class="legend-row"><div class="legend-swatch" style="background:#4a5568;"></div> Other</div>`;
-};
+    // Update feature state for the hover highlight layer
+    if (hoveredId !== null) {
+      map.setFeatureState(
+        { source: 'mha-zones', id: hoveredId },
+        { hovered: false }
+      );
+    }
+    hoveredId = feat.id;
+    map.setFeatureState(
+      { source: 'mha-zones', id: hoveredId },
+      { hovered: true }
+    );
+
+    // Build popup HTML
+    const tier    = props.MHA_VALUE || 'N/A';
+    const zone    = props.ZONING    || 'N/A';
+    const cat     = props.CATEGORY_DESC || props.CLASS_DESC || 'N/A';
+    const tierLabel = tier === 'M'  ? 'Standard (M)'
+                    : tier === 'M1' ? 'Higher (M1)'
+                    : tier === 'M2' ? 'Highest (M2)'
+                    : 'No MHA';
+    const tierColor = MHA_COLORS[tier] || '#888';
+
+    popup
+      .setLngLat(e.lngLat)
+      .setHTML(
+        '<div class="popup-title">' + zone + '</div>' +
+        '<div class="popup-row"><span>Category</span><span>' + cat + '</span></div>' +
+        '<div class="popup-row"><span>MHA Tier</span>' +
+          '<span style="color:' + tierColor + '">' + tierLabel + '</span>' +
+        '</div>'
+      )
+      .addTo(map);
+  });
+
+  // --- Mouseleave: remove popup and clear highlight ---
+  map.on('mouseleave', 'mha-fill', function () {
+    map.getCanvas().style.cursor = '';
+    popup.remove();
+    if (hoveredId !== null) {
+      map.setFeatureState(
+        { source: 'mha-zones', id: hoveredId },
+        { hovered: false }
+      );
+      hoveredId = null;
+    }
+  });
+}
+
+// ============================================================
+// LAYER TOGGLE — called by panel.js when buttons are clicked
+// ============================================================
+function setMapLayer(layerName) {
+  const visibility = layerName === 'mha' ? 'visible' : 'none';
+  mhaVisible = (layerName === 'mha');
+
+  // Only toggle if layers exist (map may still be loading)
+  if (map.getLayer('mha-fill')) {
+    map.setLayoutProperty('mha-fill',    'visibility', visibility);
+    map.setLayoutProperty('mha-outline', 'visibility', visibility);
+    map.setLayoutProperty('mha-hover',   'visibility', visibility);
+  }
+
+  // Hide popup if layers are turned off
+  if (!mhaVisible) popup.remove();
+}
+
+// ============================================================
+// RESET MAP VIEW — called by panel.js reset button
+// ============================================================
+function resetMapView() {
+  map.flyTo({
+    center: [-122.335, 47.608],
+    zoom: 11,
+    duration: 800
+  });
+}
