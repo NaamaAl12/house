@@ -66,7 +66,8 @@ map.on('load', function () {
       // Add the GeoJSON as a Mapbox source
       map.addSource('mha-zones', {
         type: 'geojson',
-        data: geojson
+        data: geojson,
+        generateId: true   // required for feature-state hover to work
       });
 
       // --- Fill layer: each zone colored by its MHA tier ---
