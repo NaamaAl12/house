@@ -3,141 +3,211 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>About &mdash; Seattle Housing Affordability</title>
-  <link href="css/style.css" rel="stylesheet" />
+  <title>About — Seattle Housing Affordability</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <!-- Shared base styles + about-specific styles -->
+  <link href="css/base.css" rel="stylesheet" />
+  <link href="css/about.css" rel="stylesheet" />
 </head>
-<body class="about-body">
 
-  <nav id="navbar">
-    <div id="nav-brand">
-      <span class="nav-dot"></span>
-      Seattle Housing Affordability
+<body>
+  <div id="about-app">
+
+    <!-- ========== NAVBAR ========== -->
+    <nav id="navbar">
+      <div id="nav-brand">
+        <span class="nav-dot"></span>
+        <span>Seattle Housing Affordability</span>
+      </div>
+      <div id="nav-links">
+        <a href="landing.html">Home</a>
+        <a href="index.html">Dashboard</a>
+        <a href="about.html" class="active">About</a>
+      </div>
+    </nav>
+
+    <!-- ========== ABOUT CONTENT ========== -->
+    <div id="about-content">
+
+      <!-- ---- Project Overview ---- -->
+      <section class="about-section">
+        <h2>Project Overview</h2>
+        <p>
+          This smart dashboard examines housing affordability in Seattle through three lenses:
+          rent burden (the share of renter households spending more than 50% of income on housing),
+          renter household income distribution, and the spatial coverage of
+          <span class="highlight">Mandatory Housing Affordability (MHA)</span> zoning policy.
+        </p>
+        <p>
+          By mapping MHA zones alongside trend data spanning 2006–2022, the dashboard gives
+          residents, advocates, and policymakers a spatial and temporal view of housing inequality
+          in one of the fastest-growing cities in the U.S.
+        </p>
+        <p>
+          This project was built for <span class="highlight">GEOG 458: Advanced Digital Geographies</span>
+          at the University of Washington, Winter 2025.
+        </p>
+      </section>
+
+      <!-- ---- Project Goal ---- -->
+      <section class="about-section">
+        <h2>Project Goal</h2>
+        <p>
+          The central question driving this project is:
+          <span class="highlight">Where has Seattle implemented Mandatory Housing Affordability
+          zoning, and is the citywide rent burden improving or worsening over time — and for whom?</span>
+        </p>
+        <p>
+          Rather than presenting a policy evaluation, this is an exploratory tool — designed to
+          surface spatial and demographic patterns that are hard to see in tables or reports alone.
+          The dashboard is intended for Seattle residents and renters, housing rights organizations,
+          urban planners, community groups working on affordable housing, and researchers studying
+          urban inequality.
+        </p>
+      </section>
+
+      <!-- ---- Broader Impacts & Limitations ---- -->
+      <section class="about-section">
+        <h2>Broader Impacts &amp; Limitations</h2>
+        <p>
+          This dashboard has potential utility beyond the classroom. It could serve as a tool for
+          housing rights activist groups, tenant advocacy organizations, and urban planners who need
+          accessible, data-driven visualizations of spatial inequality in housing costs.
+        </p>
+        <p>
+          We are aware that visualizing areas with high rent burdens could contribute to stigmatization
+          or provide information useful for gentrification. To mitigate this, we focus on citywide
+          trends rather than targeting specific neighborhoods, contextualize all data with explanatory
+          text, and make clear that this tool is intended for advocacy and awareness — not for
+          real estate investment decisions.
+        </p>
+        <p>
+          A key limitation of this dashboard is that our rent burden and renter income datasets are
+          citywide aggregates — they do not have census tract-level geometry. As a result, the map
+          displays MHA zone boundaries rather than a choropleth of burden by neighborhood. Future
+          versions of this project could incorporate ACS tract-level data to enable a spatial
+          overlay of burden and zoning policy.
+        </p>
+      </section>
+
+      <!-- ---- Data Sources ---- -->
+      <section class="about-section">
+        <h2>Data Sources</h2>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Dataset</th>
+              <th>Source</th>
+              <th>Link</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Mandatory Housing Affordability (MHA) Zones</td>
+              <td>data.gov / Seattle City GIS</td>
+              <td>
+                <a href="https://catalog.data.gov/dataset/mandatory-housing-affordability-mha-zones-53917" target="_blank">View Dataset</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Rent Burden Greater than 50%</td>
+              <td>Seattle City GIS Open Data</td>
+              <td>
+                <a href="https://data-seattlecitygis.opendata.arcgis.com/datasets/SeattleCityGIS::rent-burden-greater-than-50/about" target="_blank">View Dataset</a>
+              </td>
+            </tr>
+            <tr>
+              <td>Renter Households by Income Category</td>
+              <td>Seattle City GIS Open Data</td>
+              <td>
+                <a href="https://data-seattlecitygis.opendata.arcgis.com/datasets/SeattleCityGIS::renter-households-by-income-category/about" target="_blank">View Dataset</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- ---- Applied Libraries & Services ---- -->
+      <section class="about-section">
+        <h2>Applied Libraries &amp; Services</h2>
+        <div class="lib-chips">
+          <div class="lib-chip">
+            <div class="lib-chip-name">Mapbox GL JS</div>
+            <div class="lib-chip-desc">Interactive map rendering</div>
+          </div>
+          <div class="lib-chip">
+            <div class="lib-chip-name">C3.js</div>
+            <div class="lib-chip-desc">Chart generation</div>
+          </div>
+          <div class="lib-chip">
+            <div class="lib-chip-name">D3.js</div>
+            <div class="lib-chip-desc">Data loading &amp; utilities</div>
+          </div>
+          <div class="lib-chip">
+            <div class="lib-chip-name">GitHub Pages</div>
+            <div class="lib-chip-desc">Hosting &amp; deployment</div>
+          </div>
+          <div class="lib-chip">
+            <div class="lib-chip-name">GeoJSON</div>
+            <div class="lib-chip-desc">Spatial data format</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---- Team ---- -->
+      <section class="about-section">
+        <h2>Team — Group 08</h2>
+        <p>
+          Built by five students in GEOG 458 at the University of Washington, Winter 2025.
+        </p>
+        <div class="team-grid">
+          <div class="team-card">
+            <div class="team-card-name">Team Member 1</div>
+            <div class="team-card-role">Data Processing &amp; Map Development</div>
+          </div>
+          <div class="team-card">
+            <div class="team-card-name">Team Member 2</div>
+            <div class="team-card-role">Chart Development &amp; UI Design</div>
+          </div>
+          <div class="team-card">
+            <div class="team-card-name">Team Member 3</div>
+            <div class="team-card-role">Landing Page &amp; About Page</div>
+          </div>
+          <div class="team-card">
+            <div class="team-card-name">Team Member 4</div>
+            <div class="team-card-role">Data Analysis &amp; Documentation</div>
+          </div>
+          <div class="team-card">
+            <div class="team-card-name">Team Member 5</div>
+            <div class="team-card-role">Proposal &amp; README Writing</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---- Acknowledgments ---- -->
+      <section class="about-section">
+        <h2>Acknowledgments</h2>
+        <p>
+          We would like to thank <span class="highlight">Professor Bo Zhao</span> and the
+          teaching assistants of GEOG 458 at the University of Washington for their guidance
+          throughout this project. We also thank the City of Seattle and the U.S. Census Bureau
+          for making their data openly available.
+        </p>
+        <p>
+          Inspired by projects including the
+          <a href="https://labs.mapbox.com/bites/00304/" target="_blank">NYC Restaurant Complaints Dashboard</a>
+          and the
+          <a href="https://unicef.github.io/mapbox_analysis/story/map" target="_blank">UNICEF Connectivity Disparity Map</a>.
+        </p>
+      </section>
+
     </div>
-    <div id="nav-links">
-      <a href="landing.html">Home</a>
-      <a href="index.html">Dashboard</a>
-      <a href="about.html" class="active">About</a>
-    </div>
-  </nav>
-
-  <div id="about-container">
-
-    <section class="about-section">
-      <h2>Project Overview</h2>
-      <p>
-        This smart dashboard examines housing affordability in Seattle through three lenses:
-        rent burden (the share of renter households spending more than 50% of income on housing),
-        renter household income distribution, and the spatial coverage of Mandatory Housing
-        Affordability (MHA) zoning policy. By mapping MHA zones alongside trend data spanning
-        2006–2022, the dashboard gives residents, advocates, and policymakers a spatial and
-        temporal view of housing inequality in one of the fastest-growing cities in the U.S.
-      </p>
-      <p>
-        This project was built for GEOG 458: Advanced Digital Geographies at the University
-        of Washington, Winter 2025.
-      </p>
-    </section>
-
-    <section class="about-section">
-      <h2>Project Goal</h2>
-      <p>
-        The central question driving this project is: <em>Where has Seattle implemented
-        Mandatory Housing Affordability zoning, and is the citywide rent burden improving
-        or worsening over time — and for whom?</em> Rather than presenting a policy
-        evaluation, this is an exploratory tool — designed to surface spatial and demographic
-        patterns that are hard to see in tables or reports alone.
-      </p>
-    </section>
-
-    <section class="about-section">
-      <h2>Data Sources</h2>
-      <div class="data-table">
-        <div class="data-row">
-          <div class="data-name">Mandatory Housing Affordability (MHA) Zones</div>
-          <div class="data-source">data.gov / Seattle City GIS</div>
-          <div class="data-link"><a href="https://catalog.data.gov/dataset/mandatory-housing-affordability-mha-zones-53917" target="_blank">View Dataset</a></div>
-        </div>
-        <div class="data-row">
-          <div class="data-name">Rent Burden Greater than 50%</div>
-          <div class="data-source">Seattle City GIS Open Data</div>
-          <div class="data-link"><a href="https://data-seattlecitygis.opendata.arcgis.com/datasets/SeattleCityGIS::rent-burden-greater-than-50/about" target="_blank">View Dataset</a></div>
-        </div>
-        <div class="data-row">
-          <div class="data-name">Renter Households by Income Category</div>
-          <div class="data-source">Seattle City GIS Open Data</div>
-          <div class="data-link"><a href="https://data-seattlecitygis.opendata.arcgis.com/datasets/SeattleCityGIS::renter-households-by-income-category/about" target="_blank">View Dataset</a></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="about-section">
-      <h2>Applied Libraries &amp; Services</h2>
-      <div class="tech-grid">
-        <div class="tech-item">
-          <span class="tech-name">Mapbox GL JS</span>
-          <span class="tech-desc">Interactive map rendering</span>
-        </div>
-        <div class="tech-item">
-          <span class="tech-name">C3.js</span>
-          <span class="tech-desc">Chart generation</span>
-        </div>
-        <div class="tech-item">
-          <span class="tech-name">D3.js</span>
-          <span class="tech-desc">Data loading &amp; utilities</span>
-        </div>
-        <div class="tech-item">
-          <span class="tech-name">GitHub Pages</span>
-          <span class="tech-desc">Hosting &amp; deployment</span>
-        </div>
-        <div class="tech-item">
-          <span class="tech-name">GeoJSON</span>
-          <span class="tech-desc">Spatial data format</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="about-section">
-      <h2>Team &mdash; Group 08</h2>
-      <div class="team-grid">
-        <div class="team-card">
-          <div class="team-name">Team Member 1</div>
-          <div class="team-role">Data Processing &amp; Map Development</div>
-        </div>
-        <div class="team-card">
-          <div class="team-name">Team Member 2</div>
-          <div class="team-role">Chart Development &amp; UI Design</div>
-        </div>
-        <div class="team-card">
-          <div class="team-name">Team Member 3</div>
-          <div class="team-role">Landing Page &amp; About Page</div>
-        </div>
-        <div class="team-card">
-          <div class="team-name">Team Member 4</div>
-          <div class="team-role">Data Analysis &amp; README</div>
-        </div>
-        <div class="team-card">
-          <div class="team-name">Team Member 5</div>
-          <div class="team-role">Panel Logic &amp; Integration</div>
-        </div>
-      </div>
-      <p class="team-note">
-        This project was developed under the instruction of
-        <strong>Bo Zhao</strong> (Instructor) and supported by the GEOG 458 teaching assistants.
-      </p>
-    </section>
-
-    <section class="about-section">
-      <h2>Acknowledgments</h2>
-      <p>
-        We thank the City of Seattle and King County GIS teams for making housing data
-        publicly available through open data portals. We also acknowledge that visualizing
-        data about low-income and rent-burdened communities carries responsibility — this
-        tool is intended for advocacy and awareness purposes only, not for real estate
-        or investment decisions.
-      </p>
-    </section>
+    <!-- end about-content -->
 
   </div>
-
+  <!-- end about-app -->
 </body>
 </html>
