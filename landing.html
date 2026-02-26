@@ -3,97 +3,172 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Housing Affordability in Seattle</title>
-  <link href="css/style.css" rel="stylesheet" />
+  <title>Seattle Housing Affordability</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <!-- Shared base styles + landing-specific styles -->
+  <link href="css/base.css" rel="stylesheet" />
+  <link href="css/landing.css" rel="stylesheet" />
 </head>
-<body class="landing-body">
 
-  <nav id="navbar">
-    <div id="nav-brand">
-      <span class="nav-dot"></span>
-      Seattle Housing Affordability
-    </div>
-    <div id="nav-links">
-      <a href="landing.html" class="active">Home</a>
-      <a href="index.html">Dashboard</a>
-      <a href="about.html">About</a>
-    </div>
-  </nav>
+<body>
+  <div id="landing-app">
 
-  <div id="landing-container">
+    <!-- ========== NAVBAR ========== -->
+    <nav id="navbar">
+      <div id="nav-brand">
+        <span class="nav-dot"></span>
+        <span>Seattle Housing Affordability</span>
+      </div>
+      <div id="nav-links">
+        <a href="landing.html" class="active">Home</a>
+        <a href="index.html">Dashboard</a>
+        <a href="about.html">About</a>
+      </div>
+    </nav>
 
-    <div id="landing-content">
-      <div id="landing-tag">GEOG 458 &bull; Group 08 &bull; University of Washington</div>
-      <h1 id="landing-title">
-        Who Bears the<br/>
-        <span class="accent">Cost Burden</span><br/>
-        of Seattle's Growth?
-      </h1>
-      <p id="landing-desc">
-        As Seattle has grown into one of the most expensive cities in the country,
-        the burden of rising housing costs has not fallen equally. This dashboard maps
-        where Mandatory Housing Affordability zoning policies apply and tracks how
-        rent burden — paying more than 50% of income on housing — has shifted across
-        demographic groups from 2006 to 2022.
-      </p>
+    <!-- ========== HERO ========== -->
+    <section id="hero">
 
-      <div id="landing-stats">
-        <div class="landing-stat">
-          <div class="landing-stat-number">23%</div>
-          <div class="landing-stat-label">of Seattle renters are cost burdened (2022)</div>
-        </div>
-        <div class="landing-stat">
-          <div class="landing-stat-number">2,809</div>
-          <div class="landing-stat-label">MHA zoning parcels across Seattle</div>
-        </div>
-        <div class="landing-stat">
-          <div class="landing-stat-number">17yrs</div>
-          <div class="landing-stat-label">of data from 2006&ndash;2022</div>
-        </div>
+      <!-- Left: main headline and CTA -->
+      <div class="hero-content">
+        <p class="hero-eyebrow">GEOG 458 &middot; Group 08 &middot; University of Washington</p>
+
+        <h1 class="hero-title">
+          Who Bears the<br>
+          <span class="highlight">Cost Burden</span><br>
+          of Seattle's<br>
+          Growth?
+        </h1>
+
+        <p class="hero-body">
+          As Seattle has grown into one of the most expensive cities in the
+          country, the burden of rising housing costs has not fallen equally.
+          This dashboard maps where Mandatory Housing Affordability zoning
+          policies apply and tracks how rent burden — paying more than 50%
+          of income on housing — has shifted across racial and income groups
+          from 2006 to 2022.
+        </p>
+
+        <a href="index.html" class="hero-cta">Explore the Dashboard →</a>
       </div>
 
-      <a href="index.html" id="cta-btn">Explore the Dashboard &rarr;</a>
-    </div>
+      <!-- Right: preview stat cards -->
+      <div class="hero-preview">
 
-    <div id="landing-visual">
-      <div class="visual-card">
-        <div class="vc-label">Rent Burden Trend</div>
-        <div class="vc-bars">
-          <div class="vc-bar" style="height:45%"><span>2006</span></div>
-          <div class="vc-bar" style="height:50%"><span>2010</span></div>
-          <div class="vc-bar" style="height:55%"><span>2014</span></div>
-          <div class="vc-bar" style="height:62%"><span>2018</span></div>
-          <div class="vc-bar accent-bar" style="height:58%"><span>2022</span></div>
-        </div>
-      </div>
-      <div class="visual-card" id="vc2">
-        <div class="vc-label">Burden by Group</div>
-        <div class="vc-row-bars">
-          <div class="vc-row-item">
-            <span>Black renters</span>
-            <div class="vc-row-track"><div class="vc-row-fill" style="width:72%"></div></div>
-            <span class="vc-pct">72%</span>
-          </div>
-          <div class="vc-row-item">
-            <span>Hispanic</span>
-            <div class="vc-row-track"><div class="vc-row-fill" style="width:54%"></div></div>
-            <span class="vc-pct">54%</span>
-          </div>
-          <div class="vc-row-item">
-            <span>White</span>
-            <div class="vc-row-track"><div class="vc-row-fill accent-fill" style="width:38%"></div></div>
-            <span class="vc-pct">38%</span>
-          </div>
-          <div class="vc-row-item">
-            <span>Asian</span>
-            <div class="vc-row-track"><div class="vc-row-fill accent-fill" style="width:41%"></div></div>
-            <span class="vc-pct">41%</span>
+        <!-- Card 1: rent burden trend mini-preview -->
+        <div class="preview-card">
+          <p class="preview-card-label">Rent Burden Trend &middot; 2006–2022</p>
+          <div class="mini-bars">
+            <div class="mini-bar" style="height:52%; background:#4fc3c3;"></div>
+            <div class="mini-bar" style="height:55%; background:#4fc3c3;"></div>
+            <div class="mini-bar" style="height:57%; background:#4fc3c3;"></div>
+            <div class="mini-bar" style="height:56%; background:#4fc3c3;"></div>
+            <div class="mini-bar" style="height:60%; background:#f5a623;"></div>
+            <div class="mini-bar" style="height:57%; background:#f5a623;"></div>
+            <div class="mini-bar" style="height:53%; background:#f5a623;"></div>
+            <div class="mini-bar" style="height:53%; background:#f5a623;"></div>
+            <div class="mini-bar" style="height:53%; background:#f5a623;"></div>
+            <div class="mini-bar" style="height:49%; background:#f5a623;"></div>
+            <div class="mini-bar" style="height:52%; background:#f5a623;"></div>
+            <div class="mini-bar" style="height:50%; background:#f5a623;"></div>
+            <div class="mini-bar" style="height:53%; background:#f5a623;"></div>
+            <!-- 2019 MHA bar highlighted -->
+            <div class="mini-bar" style="height:44%; background:#ffffff; opacity:0.6;"></div>
+            <div class="mini-bar" style="height:46%; background:#f5a623;"></div>
+            <div class="mini-bar" style="height:58%; background:#e74c3c;"></div>
+            <div class="mini-bar" style="height:52%; background:#e74c3c;"></div>
           </div>
         </div>
+
+        <!-- Card 2: burden by racial group in 2022 -->
+        <div class="preview-card">
+          <p class="preview-card-label">Burden by Group &middot; 2022</p>
+
+          <div class="burden-row">
+            <span class="burden-label">Native</span>
+            <div class="burden-bar-wrap">
+              <div class="burden-bar-fill" style="width:80%;"></div>
+            </div>
+            <span class="burden-pct">42%</span>
+          </div>
+
+          <div class="burden-row">
+            <span class="burden-label">Hispanic</span>
+            <div class="burden-bar-wrap">
+              <div class="burden-bar-fill" style="width:65%;"></div>
+            </div>
+            <span class="burden-pct">34%</span>
+          </div>
+
+          <div class="burden-row">
+            <span class="burden-label">Black</span>
+            <div class="burden-bar-wrap">
+              <div class="burden-bar-fill" style="width:53%;"></div>
+            </div>
+            <span class="burden-pct">28%</span>
+          </div>
+
+          <div class="burden-row">
+            <span class="burden-label">White</span>
+            <div class="burden-bar-wrap">
+              <div class="burden-bar-fill" style="width:41%; background:#f5a623;"></div>
+            </div>
+            <span class="burden-pct">22%</span>
+          </div>
+
+          <div class="burden-row">
+            <span class="burden-label">Asian</span>
+            <div class="burden-bar-wrap">
+              <div class="burden-bar-fill" style="width:31%; background:#4fc3c3;"></div>
+            </div>
+            <span class="burden-pct">16%</span>
+          </div>
+        </div>
+
       </div>
+      <!-- end hero-preview -->
+
+    </section>
+    <!-- end hero -->
+
+    <!-- ========== STATS ROW ========== -->
+    <div id="landing-stats">
+
+      <div class="landing-stat">
+        <div class="landing-stat-num">42%</div>
+        <p class="landing-stat-desc">
+          of Native renter households in Seattle spent more than half their income on housing in 2022
+        </p>
+      </div>
+
+      <div class="landing-stat">
+        <div class="landing-stat-num">2,809</div>
+        <p class="landing-stat-desc">
+          MHA-zoned parcels across Seattle, each requiring affordable housing contributions from developers
+        </p>
+      </div>
+
+      <div class="landing-stat">
+        <div class="landing-stat-num">+147%</div>
+        <p class="landing-stat-desc">
+          growth in renter households earning above 120% AMI between 2006 and 2022, reflecting rapid gentrification
+        </p>
+      </div>
+
+      <div class="landing-stat">
+        <div class="landing-stat-num">2006–22</div>
+        <p class="landing-stat-desc">
+          years of citywide rent burden data tracked across race, age, and income groups in this dashboard
+        </p>
+      </div>
+
     </div>
+    <!-- end landing-stats -->
 
   </div>
-
+  <!-- end landing-app -->
 </body>
 </html>
