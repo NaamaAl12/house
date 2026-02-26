@@ -1,0 +1,70 @@
+/* ============================================================
+   about.css — styles for about.html only
+   ============================================================ */
+
+body, html { overflow: auto; height: auto; }
+
+#about-app { min-height: 100vh; }
+
+#about-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: calc(var(--nav-height) + 60px) 40px 80px;
+}
+
+.about-section { margin-bottom: 60px; }
+
+.about-section h2 {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 6px;
+}
+
+.about-section p {
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin-top: 16px;
+}
+.about-section p .highlight { color: var(--accent); }
+
+/* ---- Team Grid ---- */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+  margin-top: 20px;
+}
+.team-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+}
+.team-card-name { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+.team-card-role { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* ---- Dataset Table ---- */
+.data-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.85rem; }
+.data-table th {
+  text-align: left;
+  padding: 10px 14px;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+}
+.data-table td { padding: 12px 14px; color: var(--text-secondary); border-bottom: 1px solid var(--border); vertical-align: top; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table td:first-child { color: var(--text-primary); font-weight: 500; }
+
+/* ---- Library Chips ---- */
+.lib-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.lib-chip { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 16px; }
+.lib-chip-name { font-family: 'Courier New', monospace; font-size: 0.82rem; color: var(--accent-teal); margin-bottom: 2px; }
+.lib-chip-desc { font-size: 0.7rem; color: var(--text-muted); }
