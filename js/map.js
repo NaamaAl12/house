@@ -6,6 +6,9 @@
 // NOTE: Replace with your own Mapbox token before deploying
 mapboxgl.accessToken = 'pk.eyJ1IjoibmFsMTIiLCJhIjoiY21reXBkYmxtMDltbDNyb2NmcjZpaDdvdiJ9.ZX7GLNtaTYyTjLOhx4ITqg';
 
+// Define EPSG:2285 (WA State Plane North, ftUS) — actual CRS of MHA file
+proj4.defs('EPSG:2285', '+proj=lcc +lat_1=48.73333333333333 +lat_2=47.5 +lat_0=47 +lon_0=-120.8333333333333 +x_0=500000.00001016 +y_0=0 +ellps=GRS80 +to_meter=0.3048006096012192');
+
 // Map is centered on Seattle, WA
 // Mapbox GL JS uses Web Mercator (EPSG:3857) internally but accepts
 // GeoJSON coordinates in WGS84 (EPSG:4326) — our data is in 4326, so no conversion needed
