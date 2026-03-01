@@ -99,12 +99,7 @@ function initLayerToggle() {
   });
 }
 
-// ============================================================
-// RESET BUTTON
-// ============================================================
-function initResetButton() {
-  const btn = document.getElementById('reset-btn');
-  if (!btn) return;
+
 
   btn.addEventListener('click', function () {
 
