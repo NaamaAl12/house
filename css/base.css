@@ -7,7 +7,6 @@
   --bg-base:       #0a0e14;
   --bg-panel:      #111827;
   --bg-card:       #0d1520;
-  --bg-card-hover: #14202e;
   --border:        #1e2d3d;
   --border-light:  #243447;
 
@@ -75,13 +74,6 @@ a:hover { text-decoration: underline; }
   color: var(--text-primary);
 }
 
-.nav-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--accent);
-  flex-shrink: 0;
-}
 
 #nav-links {
   display: flex;
