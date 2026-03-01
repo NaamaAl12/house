@@ -4,10 +4,9 @@
      - Year slider → updates charts and stat block
      - Race filter buttons → updates trend chart and stat block
      - Layer toggle buttons → shows/hides MHA map layer
-     - Reset button → resets everything to defaults
    
    Depends on: map.js (setMapLayer, resetMapView)
-               charts.js (updateChartsForYear, updateChartsForRace, resetCharts)
+               charts.js (updateChartsForYear, updateChartsForRace)
    ============================================================ */
 
 // Default state
@@ -23,7 +22,6 @@ function initPanel() {
   initYearSlider();
   initRaceButtons();
   initLayerToggle();
-  initResetButton();
 }
 
 // ============================================================
@@ -96,42 +94,5 @@ function initLayerToggle() {
         legend.style.opacity = layer === 'mha' ? '1' : '0.3';
       }
     });
-  });
-}
-
-
-
-  btn.addEventListener('click', function () {
-
-    // Reset year slider to default
-    const slider  = document.getElementById('year-slider');
-    const display = document.getElementById('year-display');
-    if (slider)  slider.value = DEFAULT_YEAR;
-    if (display) display.textContent = DEFAULT_YEAR;
-
-    // Reset race buttons — set All as active
-    const raceBtns = document.querySelectorAll('.race-btn');
-    raceBtns.forEach(b => {
-      b.classList.toggle('active', b.dataset.race === DEFAULT_RACE);
-    });
-
-    // Reset layer toggle — set MHA as active
-    const layerBtns = document.querySelectorAll('.layer-btn');
-    layerBtns.forEach(b => {
-      b.classList.toggle('active', b.dataset.layer === DEFAULT_LAYER);
-    });
-
-    // Restore legend opacity
-    const legend = document.getElementById('legend');
-    if (legend) legend.style.opacity = '1';
-
-    // Reset charts and stat block
-    resetCharts();
-
-    // Reset map view to Seattle center
-    resetMapView();
-
-    // Re-show MHA layer if it was toggled off
-    setMapLayer(DEFAULT_LAYER);
   });
 }
