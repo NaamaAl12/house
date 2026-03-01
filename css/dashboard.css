@@ -177,21 +177,7 @@ body, html { overflow: hidden; }
 .c3-tooltip { background: #1e2d3d !important; border: 1px solid var(--accent-teal) !important; }
 .c3-tooltip td { color: #e8edf3 !important; font-size: 0.75rem !important; font-weight: 500 !important; }
 
-/* ---- Reset Button & Source Note ---- */
-#reset-btn {
-  width: 100%;
-  padding: 10px;
-  background: transparent;
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius);
-  color: var(--text-secondary);
-  font-family: var(--font-body);
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  letter-spacing: 0.04em;
-}
-#reset-btn:hover { border-color: var(--accent); color: var(--accent); }
+/* ---- Source Note ---- */
 .source-note { font-size: 0.65rem; color: var(--text-muted); line-height: 1.6; }
 
 /* ---- Map Container ---- */
