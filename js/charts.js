@@ -54,10 +54,6 @@ function initCharts() {
 // HELPERS
 // ============================================================
 
-// Get all unique years in sorted order
-function getYears() {
-  return [...new Set(rentBurdenData.map(d => d.YEAR))].sort();
-}
 
 // Filter rent burden rows by race, tenure=Renters, age=All
 // Returns array sorted by year
@@ -304,10 +300,3 @@ function updateBurdenStat(year, race) {
   }
 }
 
-// Resets charts to default state (2022, All races)
-function resetCharts() {
-  currentYear = 2022;
-  currentRace = 'All';
-  updateChartsForYear(2022);
-  updateChartsForRace('All');
-}
