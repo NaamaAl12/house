@@ -221,14 +221,3 @@ function setMapLayer(layerName) {
   // Hide popup if layers are turned off
   if (!mhaVisible) popup.remove();
 }
-
-// ============================================================
-// RESET MAP VIEW — called by panel.js reset button
-// ============================================================
-function resetMapView() {
-  map.flyTo({
-    center: [-122.335, 47.608],
-    zoom: 11,
-    duration: 800
-  });
-}
