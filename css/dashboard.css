@@ -174,8 +174,8 @@ body, html { overflow: hidden; }
 .c3-axis path, .c3-axis line { stroke: var(--border) !important; }
 .c3-grid line { stroke: var(--border) !important; }
 .c3-line { stroke-width: 2.5px !important; }
-.c3-tooltip { background: var(--bg-panel) !important; border: 1px solid var(--border) !important; }
-.c3-tooltip td { color: var(--text-primary) !important; font-size: 0.72rem !important; }
+.c3-tooltip { background: #1e2d3d !important; border: 1px solid var(--accent-teal) !important; }
+.c3-tooltip td { color: #e8edf3 !important; font-size: 0.75rem !important; font-weight: 500 !important; }
 
 /* ---- Reset Button & Source Note ---- */
 #reset-btn {
